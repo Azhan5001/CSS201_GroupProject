@@ -64,7 +64,12 @@ public class CraftManagement {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("\nCraft Management System: \n1. Add a Craft.\n2. View Available Crafts.\n3. Edit/Delete Craft.\n4. Search for Crafts.\n5. Exit.\nPlease Enter Your choice: ");
+            hr();
+            System.out.println("Craft Management System: ");
+            hr();
+            System.out.println("1. Add a Craft.\n2. View Available Crafts.\n3. Edit/Delete Craft.\n4. Search for Crafts.\n5. Exit.");
+            hr();
+            System.out.println("Please Enter Your choice: ");
 
             do {
                 ans = intValidator(scanner);
@@ -94,6 +99,9 @@ public class CraftManagement {
                     break;
             }
         }
+    }
+    static void hr(){
+        System.out.println("------------------------------------------------------------------------------------------------------");
     }
 
     static int intValidator(Scanner scanner) {
@@ -132,7 +140,12 @@ public class CraftManagement {
 
     static void editDeleteMenu(Scanner scanner, Craft crafts[], int maxCrafts) {
         int choice = -1;
-        System.out.println("\nEdit/Delete Menu:\n1. Edit Craft.\n2. Delete Craft.\n3. Main Menu.\nPlease Enter a number: ");
+        hr();
+        System.out.println("Edit/Delete Menu:");
+        hr();
+        System.out.println("1. Edit Craft.\n2. Delete Craft.\n3. Main Menu.");
+        hr();
+        System.out.println("Please Enter a number: ");
 
         do {
             choice = intValidator(scanner);
@@ -165,28 +178,31 @@ public class CraftManagement {
             System.out.println("Name cannot be empty. Try again.");
         }
 
-        System.out.println("\nPlease enter the quantity of the craft");
+        System.out.println("Please enter the quantity of the craft");
         while ((quantity = intValidator(scanner)) <= 0) {
             System.out.println("Please enter a positive number: ");
         }
 
-        System.out.println("\nPlease enter the price of the craft");
+        System.out.println("Please enter the price of the craft");
         while ((price = doubleValidator(scanner)) <= 0) {
             System.out.println("Price must be positive. Please enter again: ");
         }
 
-        System.out.println("\nPlease enter the category of the craft");
+        System.out.println("Please enter the category of the craft");
         while ((category = scanner.nextLine().trim()).isEmpty()) {
             System.out.println("Category cannot be empty. Please enter again: ");
         }
 
-        System.out.println("\nPlease enter the description of the craft (optional):");
+        System.out.println("Please enter the description of the craft (optional):");
         description = scanner.nextLine().trim();
 
         for (int i = 0; i < maxCrafts; i++) {
             if (crafts[i] == null) {
                 crafts[i] = new Craft(name, quantity, price, category, description);
-                System.out.println("\nCraft added successfully!");
+                hr();
+                System.out.println("Craft added successfully!");
+                hr();
+                System.out.println("");
                 return;
             }
         }
@@ -195,8 +211,9 @@ public class CraftManagement {
 
     static boolean viewCrafts(Craft crafts[], int maxCrafts) {
         boolean hasCrafts = false;
+        hr();
         System.out.printf("%n|%-5s|%-20s|%-5s|%-10s|%-15s|%-30s|%n", "ID", "Name", "Qty", "Price", "Category", "Description");
-        System.out.println("------------------------------------------------------------------------------------------------------");
+        hr();
 
         for (int i = 0; i < maxCrafts; i++) {
             if (crafts[i] != null) {
@@ -207,6 +224,7 @@ public class CraftManagement {
         if (!hasCrafts) {
             System.out.println("No crafts Available.");
         }
+        hr();
         return hasCrafts;
     }
 
@@ -214,8 +232,9 @@ public class CraftManagement {
         String input;
         Craft craft = crafts[index];
 
-        System.out.printf("Editing craft %s:\n", craft.getName());
-        
+        hr();
+        System.out.printf("Editing craft: %s:%n", craft.getName());
+        hr();
         System.out.printf("Edit Name: %s (leave blank to keep): ", craft.getName());
         input = scanner.nextLine();
         if (!input.trim().isEmpty()) craft.setName(input);
@@ -265,7 +284,7 @@ public class CraftManagement {
             if (crafts[i] != null && crafts[i].getName().toLowerCase().contains(searchInput)){
                 if (!found){
                     System.out.printf("%n|%-5s|%-20s|%-5s|%-10s|%-15s|%-30s|%n", "ID", "Name", "Qty", "Price", "Category", "Description");
-                    System.out.println("------------------------------------------------------------------------------------------------------");
+                    hr();
                     printCraft(crafts, i);
                     found = true;
                 }else{
