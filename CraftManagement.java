@@ -64,12 +64,12 @@ public class CraftManagement {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("\nCraft Management System: \n1. Add a Craft.\n2. View Available Crafts.\n3. Edit/Delete Craft.\n4. Exit.\nPlease Enter Your choice: ");
+            System.out.println("\nCraft Management System: \n1. Add a Craft.\n2. View Available Crafts.\n3. Edit/Delete Craft.\n4. Search for Crafts.\n5. Exit.\nPlease Enter Your choice: ");
 
             do {
                 ans = intValidator(scanner);
-                if (ans < 1 || ans > 4) {
-                    System.out.println("Invalid Choice! Enter a number between [1-4]: ");
+                if (ans < 1 || ans > 5) {
+                    System.out.println("Invalid Choice! Enter a number between [1-5]: ");
                 } else break;
             } while (true);
 
@@ -84,6 +84,9 @@ public class CraftManagement {
                     editDeleteMenu(scanner, crafts, maxCrafts);
                     break;
                 case 4:
+                    searchCraft(scanner, crafts, ans);
+                    break;
+                case 5:
                     System.out.println("Exiting Craft Management System. Goodbye!");
                     scanner.close();
                     return;
@@ -197,13 +200,7 @@ public class CraftManagement {
 
         for (int i = 0; i < maxCrafts; i++) {
             if (crafts[i] != null) {
-                System.out.printf("|%-5d|%-20.20s|%-5d|$%-9.2f|%-15.15s|%-30.30s|%n",
-                        i + 1,
-                        crafts[i].getName(),
-                        crafts[i].getQuantity(),
-                        crafts[i].getPrice(),
-                        crafts[i].getCategory(),
-                        crafts[i].getDescription());
+                printCraft(crafts, i);
                 hasCrafts = true;
             }
         }
@@ -249,4 +246,35 @@ public class CraftManagement {
         crafts[maxCrafts - 1] = null;
         System.out.println("\nCraft deleted successfully!");
     }
+
+    static void printCraft(Craft crafts[], int i){
+        System.out.printf("|%-5d|%-20.20s|%-5d|$%-9.2f|%-15.15s|%-30.30s|%n",
+        i + 1,
+        crafts[i].getName(),
+        crafts[i].getQuantity(),
+        crafts[i].getPrice(),
+        crafts[i].getCategory(),
+        crafts[i].getDescription());
+    }
+
+    static void searchCraft(Scanner scanner, Craft crafts[], int maxBooks){
+        boolean found = false;
+        System.out.println("Search by name: ");
+        String searchInput = scanner.nextLine().toLowerCase();
+        for(int i = 0; i < maxBooks; i++){
+            if (crafts[i] != null && crafts[i].getName().toLowerCase().contains(searchInput)){
+                if (!found){
+                    System.out.printf("%n|%-5s|%-20s|%-5s|%-10s|%-15s|%-30s|%n", "ID", "Name", "Qty", "Price", "Category", "Description");
+                    System.out.println("------------------------------------------------------------------------------------------------------");
+                    printCraft(crafts, i);
+                    found = true;
+                }else{
+                    printCraft(crafts, i);
+                }
+            } 
+        }
+        if(!found) System.out.println("No Crafts Found!");
+    }
 }
+
+
