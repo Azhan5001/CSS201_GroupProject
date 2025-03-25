@@ -63,6 +63,18 @@ public class CraftManagement {
         int ans = -1;
         Scanner scanner = new Scanner(System.in);
 
+        crafts[0] = new Craft("Wooden Carving", 5, 25.50, "Woodwork", "Handcrafted wooden decoration.");
+        crafts[1] = new Craft("Clay Pot", 10, 15.75, "Pottery", "Handmade clay pot for plants.");
+        crafts[2] = new Craft("Beaded Necklace", 20, 8.99, "Jewelry", "Colorful handmade beaded necklace.");
+        crafts[3] = new Craft("Glass Painting", 2, 45.00, "Painting", "Beautiful painting on glass.");
+        crafts[4] = new Craft("Handwoven Basket", 15, 12.50, "Weaving", "Eco-friendly handwoven basket.");
+        crafts[5] = new Craft("Resin Keychain", 30, 5.99, "Resin Art", "Personalized resin keychains.");
+        crafts[6] = new Craft("Embroidered Cushion", 8, 29.99, "Embroidery", "Hand-stitched decorative cushion.");
+        crafts[7] = new Craft("Origami Paper Art", 50, 3.50, "Paper Craft", "Intricate origami paper sculpture.");
+        crafts[8] = new Craft("Ceramic Mug", 12, 18.75, "Pottery", "Hand-painted ceramic mug.");
+        crafts[9] = new Craft("Macrame Wall Hanging", 4, 55.00, "Macrame", "Elegant macrame wall decor.");
+    
+
         while (true) {
             hr();
             System.out.println("Craft Management System: ");
@@ -89,7 +101,7 @@ public class CraftManagement {
                     editDeleteMenu(scanner, crafts, maxCrafts);
                     break;
                 case 4:
-                    searchCraft(scanner, crafts, ans);
+                    searchMenu(scanner, crafts, maxCrafts);
                     break;
                 case 5:
                     System.out.println("Exiting Craft Management System. Goodbye!");
@@ -276,12 +288,120 @@ public class CraftManagement {
         crafts[i].getDescription());
     }
 
-    static void searchCraft(Scanner scanner, Craft crafts[], int maxBooks){
+    static void searchMenu(Scanner scanner, Craft crafts[], int maxCrafts){
+        int choice = -1;
+        hr();
+        System.out.println("Search By: ");
+        hr();
+        System.out.println("1. Search by Name.\n2. Search by Quantity.\n3. Search by Price.\n4. Search by Description.");
+        hr();
+        System.out.println("Choose a number: ");
+        do {
+            choice = intValidator(scanner);
+            if (choice < 1 || choice > 4) System.out.println("Please enter a number between 1-3: ");
+            else if (choice == 5) return;
+        } while (choice < 1 || choice > 4);
+
+        switch (choice) {
+            case 1:
+                searchByName(scanner, crafts, maxCrafts);
+                break;
+            case 2:
+                searchByQuantity(scanner, crafts, maxCrafts);
+                break;
+            case 3:
+                searchByPrice(scanner, crafts, maxCrafts);
+                break;
+            case 4:
+                searchByDescription(scanner, crafts, maxCrafts);
+            default:
+                break;
+        }
+    }
+
+    static void searchByName(Scanner scanner, Craft crafts[], int maxCrafts){
         boolean found = false;
         System.out.println("Search by name: ");
         String searchInput = scanner.nextLine().toLowerCase();
-        for(int i = 0; i < maxBooks; i++){
+        hr();
+        for(int i = 0; i < maxCrafts; i++){
             if (crafts[i] != null && crafts[i].getName().toLowerCase().contains(searchInput)){
+                if (!found){
+                    System.out.printf("%n|%-5s|%-20s|%-5s|%-10s|%-15s|%-30s|%n", "ID", "Name", "Qty", "Price", "Category", "Description");
+                    hr();
+                    printCraft(crafts, i);
+                    found = true;
+                }else{
+                    printCraft(crafts, i);
+                }
+            } 
+        }
+        if(!found) System.out.println("No Crafts Found!");
+    }
+
+    static void searchByQuantity(Scanner scanner, Craft crafts[], int maxCrafts){
+        int maxQty = -1;
+        int minQty = -1;
+        boolean found = false;
+        hr();
+        System.out.println("Range of Qty:");
+        hr();
+        System.out.println("Enter Min qty: ");
+        minQty = intValidator(scanner);
+        System.out.println("Enter Max qty: ");
+        maxQty = intValidator(scanner); 
+        hr();
+
+        for(int i = 0; i < maxCrafts; i++){
+            if (crafts[i] != null && crafts[i].getQuantity() >= minQty && crafts[i].getQuantity() <= maxQty) {
+                if(!found){
+                    System.out.printf("%n|%-5s|%-20s|%-5s|%-10s|%-15s|%-30s|%n", "ID", "Name", "Qty", "Price", "Category", "Description");
+                    hr();
+                    printCraft(crafts, i);
+                    found = true;
+                } else{
+                    printCraft(crafts, i);
+                }
+            }
+        }
+        if(!found) System.out.println("No Crafts Found!");
+    }
+
+    static void searchByPrice(Scanner scanner, Craft crafts[], int maxCrafts){
+        double maxQty = -1;
+        double minQty = -1;
+        boolean found = false;
+        hr();
+        System.out.println("Range of Price:");
+        hr();
+        System.out.println("Enter Min Price: ");
+        minQty = doubleValidator(scanner);
+        System.out.println("Enter Max Price: ");
+        maxQty = doubleValidator(scanner); 
+        hr();
+
+        for(int i = 0; i < maxCrafts; i++){
+            if (crafts[i] != null && crafts[i].getPrice() >= minQty && crafts[i].getPrice() <= maxQty) {
+                if(!found){
+                    System.out.printf("%n|%-5s|%-20s|%-5s|%-10s|%-15s|%-30s|%n", "ID", "Name", "Qty", "Price", "Category", "Description");
+                    hr();
+                    printCraft(crafts, i);
+                    found = true;
+                } else{
+                    printCraft(crafts, i);
+                }
+            }
+        }
+        if(!found) System.out.println("No Crafts Found!");
+    }
+
+    static void searchByDescription(Scanner scanner, Craft crafts[], int maxCrafts){
+        boolean found = false;
+        System.out.println("Search by Description: ");
+        String searchInput = scanner.nextLine().toLowerCase();
+        hr();
+        for(int i = 0; i < maxCrafts; i++){
+            if (crafts[i] != null && crafts[i].getDescription().toLowerCase().contains(searchInput)){
                 if (!found){
                     System.out.printf("%n|%-5s|%-20s|%-5s|%-10s|%-15s|%-30s|%n", "ID", "Name", "Qty", "Price", "Category", "Description");
                     hr();
